@@ -10,7 +10,9 @@ import CoreLocation
 
 
 class WeatherViewController: UIViewController, UITextFieldDelegate {
-
+    
+    var timer = Timer()
+   
     
     @IBOutlet weak var searchTextField: UITextField!
     @IBOutlet weak var datelabel: UILabel!
@@ -27,6 +29,9 @@ class WeatherViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+         timer = Timer.scheduledTimer(timeInterval: 60, target: self,
+        selector: #selector (updateLabel), userInfo: nil, repeats: true)
+            
         // Do any additional setup after loading the view.
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
@@ -35,7 +40,21 @@ class WeatherViewController: UIViewController, UITextFieldDelegate {
         weatherManager.delegate = self
         searchTextField.delegate = self
     }
+    
+    @objc func updateLabel(){
+    let dateformatter = DateFormatter()
+        dateformatter.dateStyle = .full
+        dateformatter.timeStyle = . short
+    let present = Date()
+    datelabel.text = "\(dateformatter.string(from:present))"
 
+    }
+    
+    
+    @IBAction func locationPressed(_ sender: UIButton) {
+        locationManager.requestLocation()
+    }
+    
     @IBAction func searchButtonPressed(_ sender: UIButton) {
         searchTextField.endEditing(true)
        
@@ -48,7 +67,7 @@ class WeatherViewController: UIViewController, UITextFieldDelegate {
         if textField.text != "" {
             return true
         } else {
-            textField.placeholder = "Type something"
+            textField.placeholder = "Enter City Name"
             return false
         }
 }
@@ -65,11 +84,15 @@ class WeatherViewController: UIViewController, UITextFieldDelegate {
 
 extension WeatherViewController: WeatherManagerDelegate {
     
-    func didUpdateWeather(_ weatherManager: WeatherManager, weather: WeatherModel) {
+   
+        
+        func didUpdateWeather(_ weatherManager: WeatherManager, weather: WeatherModel) {
         DispatchQueue.main.async {
             self.temperatureLabel.text = weather.temperatureString
             self.weatherImage.image = UIImage(systemName: weather.conditionName)
             self.cityLabel.text = weather.cityName
+            self.descriptionLabel.text = weather.descripsion
+            self.updateLabel()
         }
     }
     

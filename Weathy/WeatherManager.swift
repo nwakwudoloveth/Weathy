@@ -53,8 +53,8 @@ func fetchWeather(cityName: String) {
             let id = decodedData.weather[0].id
             let temp = decodedData.main.temp
             let name = decodedData.name
-            
-            let weather = WeatherModel(conditionId: id, cityName: name, temperature: temp)
+            let description = decodedData.weather[0].description
+            let weather = WeatherModel(conditionId: id, cityName: name, temperature: temp, descripsion: description)
             return weather
             
         } catch {

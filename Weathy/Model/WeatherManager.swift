@@ -8,22 +8,22 @@
 import Foundation
 import CoreLocation
 
- protocol WeatherManagerDelegate {
+protocol WeatherManagerDelegate {
     func didUpdateWeather(_ weatherManager: WeatherManager, weather: WeatherModel)
     func didFailWithError(error: Error)
 }
 
 
- struct WeatherManager {
+struct WeatherManager {
     let weatherURL = "https://api.openweathermap.org/data/2.5/weather?appid=84eb49e1996ec1c2beb79ef559d85f27&units=metric"
-
+    
     var delegate: WeatherManagerDelegate?
     
-
-func fetchWeather(cityName: String) {
-    let urlString = "\(weatherURL)&q=\(cityName)"
-    performRequest(with: urlString)
-}
+    
+    func fetchWeather(cityName: String) {
+        let urlString = "\(weatherURL)&q=\(cityName)"
+        performRequest(with: urlString)
+    }
     
     func fetchWeather(latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
         let urlString = "\(weatherURL)&lat=\(latitude)&lon=\(longitude)"

@@ -12,7 +12,7 @@ import CoreLocation
 class WeatherViewController: UIViewController, UITextFieldDelegate {
     
     var timer = Timer()
-   
+    
     
     @IBOutlet weak var searchTextField: UITextField!
     @IBOutlet weak var datelabel: UILabel!
@@ -25,13 +25,13 @@ class WeatherViewController: UIViewController, UITextFieldDelegate {
     
     var weatherManager = WeatherManager()
     let locationManager = CLLocationManager()
-
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-         timer = Timer.scheduledTimer(timeInterval: 60, target: self,
-        selector: #selector (updateLabel), userInfo: nil, repeats: true)
-            
+        timer = Timer.scheduledTimer(timeInterval: 60, target: self,
+                                     selector: #selector (updateLabel), userInfo: nil, repeats: true)
+        
         // Do any additional setup after loading the view.
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
@@ -42,12 +42,12 @@ class WeatherViewController: UIViewController, UITextFieldDelegate {
     }
     
     @objc func updateLabel(){
-    let dateformatter = DateFormatter()
+        let dateformatter = DateFormatter()
         dateformatter.dateStyle = .full
         dateformatter.timeStyle = . short
-    let present = Date()
-    datelabel.text = "\(dateformatter.string(from:present))"
-
+        let present = Date()
+        datelabel.text = "\(dateformatter.string(from:present))"
+        
     }
     
     
@@ -57,7 +57,7 @@ class WeatherViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func searchButtonPressed(_ sender: UIButton) {
         searchTextField.endEditing(true)
-       
+        
     }
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         searchTextField.endEditing(true)
@@ -70,23 +70,23 @@ class WeatherViewController: UIViewController, UITextFieldDelegate {
             textField.placeholder = "Enter City Name"
             return false
         }
-}
+    }
     func textFieldDidEndEditing(_ textField: UITextField) {
         
         if let city = searchTextField.text {
-           weatherManager.fetchWeather(cityName: city)
+            weatherManager.fetchWeather(cityName: city)
         }
         
         searchTextField.text = ""
         
     }
 }
-
+//MARK:- WeatherManagerDelegate
 extension WeatherViewController: WeatherManagerDelegate {
     
-   
-        
-        func didUpdateWeather(_ weatherManager: WeatherManager, weather: WeatherModel) {
+    
+    
+    func didUpdateWeather(_ weatherManager: WeatherManager, weather: WeatherModel) {
         DispatchQueue.main.async {
             self.temperatureLabel.text = weather.temperatureString
             self.weatherImage.image = UIImage(systemName: weather.conditionName)
@@ -100,8 +100,10 @@ extension WeatherViewController: WeatherManagerDelegate {
         print(error)
     }
 }
+
+//MARK:- LOCATION
 extension WeatherViewController: CLLocationManagerDelegate {
-   
+    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.last {
             locationManager.stopUpdatingLocation()

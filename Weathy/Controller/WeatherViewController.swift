@@ -43,7 +43,7 @@ class WeatherViewController: UIViewController, UITextFieldDelegate {
     
     @objc func updateLabel(){
         let dateformatter = DateFormatter()
-        dateformatter.dateStyle = .full
+        dateformatter.dateStyle = .long
         dateformatter.timeStyle = . short
         let present = Date()
         datelabel.text = "\(dateformatter.string(from:present))"

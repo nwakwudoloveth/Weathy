@@ -15,7 +15,8 @@ This is a weather app that checks the weather of different cities and countries.
 # Built With 
 * Swift
 
-## features
+## Features
 
 1.Corelation
-2.Api Calls
+
+2.Api Call
